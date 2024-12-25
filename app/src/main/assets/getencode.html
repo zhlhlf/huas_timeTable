@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>get huas教务系统登录加密</title>
+    <script src="https://xyjw.huas.edu.cn/jsxsd/js/conwork.js"></script>
+    <style>
+        input {
+            background-color: aqua;
+			height: 50px;
+        }
+        textarea {
+			height: 60px;
+		}
+        .b {
+            margin: 20px auto;
+        }
+
+        .s {
+            text-align: center;
+        }
+
+        .a {
+            margin-top: 50px;
+        }
+
+        .c {
+            margin-bottom: 30px;
+        }
+
+        body {
+            background-color: rgb(244, 230, 233);
+        }
+
+        .c input {
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="s">
+        <div class="a">
+            <input type="text" name="acc">
+        </div>
+        <div class="b">
+            <input type="password" name="psw">
+        </div>
+        <div class="c">
+            <input type="button" onclick="z()" value="get加密码">
+        </div>
+        <div class="b">
+		  <textarea type="text" >
+		  </textarea>
+        </div>
+	    
+        <h5>
+            &copy zhlhlf
+        </h5>
+    </div>
+
+</body>
+<script>
+    function z() {
+        var a = document.getElementsByTagName("input")[0].value;
+        var b = document.getElementsByTagName("input")[1].value;
+        a1 = encodeInp(a);
+        b1 = encodeInp(b);
+        var encoded = a+"あ"+a1 + "%25%25%25" + b1;
+        document.getElementsByTagName("textarea")[0].value=encoded;
+      
+    }
+</script>
+
+</html>
