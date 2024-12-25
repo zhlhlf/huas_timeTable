@@ -1,11 +1,11 @@
-package com.kbhuas;
+package com.huas.kb;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,16 +17,7 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 import org.json.JSONObject;
 import org.json.JSONException;
-import java.nio.charset.StandardCharsets;
-import android.os.StrictMode;
-import android.os.Looper;
-import java.net.MalformedURLException;
-import android.util.Log;
-import java.io.FileWriter;
-import android.content.Intent;
-import android.util.JsonReader;
-import org.json.JSONStringer;
-import java.util.HashMap;
+
 import android.webkit.WebView;
 import android.webkit.CookieManager;
 import java.net.UnknownHostException;
@@ -41,11 +32,11 @@ public class util {
     public static File file;
     public static File file2;
     public static Activity ct = null;
+
 	public static String host = "https://xyjw.huas.edu.cn";
 	//public static String host="http://172.26.0.175";
+
 	public static String date;
-	public static WebView urlweb;
-	public static CookieManager cm;
 	public static TextView sj;
 	public static String msg;
 	public static String s;
@@ -53,43 +44,53 @@ public class util {
 		util.date = date;
 		new Thread(){
 			public void run() {
+				HttpURLConnection ht = null;
+				FileOutputStream of = null;
+
+				byte sf[] = new byte[1000];
 				try {
 					shellutil.CommandResult result = shellutil.execCommand("rm -rf " + util.ct.getFilesDir().getPath() + "/*.html ", false);
 					URL url = new URL(host + "/jsxsd/framework/main_index_loadkb.jsp?rq=" + util.date);
-					HttpURLConnection ht = (HttpURLConnection) url.openConnection();
+					ht = (HttpURLConnection) url.openConnection();
 					ht.setRequestMethod("POST");
 					ht.setRequestProperty("Cookie", getCookie());
 					ht.setInstanceFollowRedirects(true);  
 					ht.connect();
-					File file = new File(util.ct.getFilesDir().getPath() + "/" + util.date  + ".html");
-					FileOutputStream of = new FileOutputStream(file);
-					byte sf[] = new byte[1000];
+
+					of = new FileOutputStream(file);
+
 					InputStream is = ht.getInputStream();
 					int len;
 					while ((len = is.read(sf)) != -1) {
 						of.write(sf, 0, len);
 					}
+
 					of.close();
 					ht.disconnect();
 					result = shellutil.execCommand("sh " + util.ct.getFilesDir().getPath() + "/sed.sh " + util.date, false);
 					//util.showDiag(result.errorMsg);
 				} catch (Exception e) {
-					showDiag(e.getClass().getName() + e.getMessage());
+					showDiag(e.getClass().getName() +"  "+ e.getMessage());
 				}
-				util.ct.runOnUiThread(new Runnable(){
+
+				util.ct.runOnUiThread(new Runnable() {
+
 						@Override
 						public void run() {
 							if (file.exists()){
-								view.loadUrl(util.file.getPath());			
+								view.loadUrl(util.file.getPath());
 							}
-							
+
 							if(file2.exists()) {
 								view.loadUrl(util.file2.getPath());
 								util.showDiag("账号或密码错误！");
 								kb.logout(null);
 							}
-						}							
-					});
+							
+						}
+						
+					
+                });
 			}
 		}.start();
 
@@ -116,6 +117,8 @@ public class util {
 		} catch (Exception e) {
 			showDiag(e.getClass().getName() + e.getMessage());
 		}
+		Log.d("huas-kb","cookie" + cookie);
+
 		return cookie;
 	}
     public static void saveMap(Map<String,String> map) {
@@ -218,11 +221,14 @@ public class util {
 					//showDiag("更新诗句失败 请告诉zhlhlf修复！");
 				}
 				util.ct.runOnUiThread(new Runnable(){
+
 						@Override
 						public void run() {
-							sj.setText(s);				
-						}							
-					});
+							sj.setText(s);
+							
+							}
+						
+				} );
 			}}.start();
 	}
 	

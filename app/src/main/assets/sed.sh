@@ -10,9 +10,10 @@ req=<<zhlhlf
 </div>
 <form
 zhlhlf
+
 sed -i '/<iframe/,/<\/script>/d' ./$1.html
 sed -i "s|<form|$req|g" ./$1.html
-sed -i 's|<td>|<td onclick="showMsg(this)">|g' ./$1.html
+
 req=<<zhlhlf
 </form>
 <style>
@@ -80,6 +81,14 @@ req=<<zhlhlf
 			tds[i].style.background = colors[x];
 		}
 	}
+
+  const tdElements = document.querySelectorAll('td');
+  tdElements.forEach(td => {
+      td.addEventListener('click', function(event) {
+          showMsg(td);
+      });
+  });
+
 </script>
 zhlhlf
 sed -i "s|</form>|$req|g" ./$1.html

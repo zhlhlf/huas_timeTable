@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kbhuas">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />  
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	
@@ -14,7 +14,7 @@
 		android:usesCleartextTraffic="true"
 		
         <activity
-            android:name=".kb"
+            android:name="com.huas.kb.kb"
             android:label="@string/app_name"
             android:exported="true">
             <intent-filter>
@@ -23,9 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-		<activity android:name=".login" />
-		<activity android:name=".urlweb" />
-		
+		<activity android:name="com.huas.kb.login" />
+
         <meta-data
           android:name="android.max_aspect"
           android:value="4.0"/>

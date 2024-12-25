@@ -1,4 +1,4 @@
-package com.kbhuas;
+package com.huas.kb;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.DataOutputStream;

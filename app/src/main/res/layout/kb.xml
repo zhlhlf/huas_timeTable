@@ -9,20 +9,22 @@
 		android:orientation="horizontal"
 		android:layout_width="match_parent"
 		android:layout_height="60dp"
-		android:gravity="bottom"
+		android:gravity="center"
 		android:layout_marginTop="39dp">
 
 		<EditText
 			android:layout_width="130dp"
 			android:ems="10"
-			android:layout_height="wrap_content"
+			android:paddingLeft="15dp"
+			android:layout_height="40dp"
 			android:id="@+id/date"
-			android:layout_marginLeft="10dp"/>
+			android:layout_marginLeft="10dp"
+			android:background="@drawable/input"/>
 
 		<LinearLayout
 			android:orientation="horizontal"
-			android:layout_height="50dp"
-			android:gravity="left|center_horizontal"
+			android:layout_height="60dp"
+			android:gravity="left|center"
 			android:layout_width="match_parent">
 
 			<TextView
@@ -30,12 +32,11 @@
 				android:layout_height="33dp"
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				android:id="@+id/week"
-				android:textColor="#FFFFCB80"
-				android:layout_marginTop="10dp"
+				android:textColor="#FFFF8600"
 				android:layout_marginRight="10dp"
 				android:textSize="18sp"
 				android:paddingLeft="10dp"
-				android:paddingEnd="7dp"/>
+				android:layout_marginTop="5dp"/>
 
 			<View
 				android:layout_width="1dp"
@@ -128,7 +129,8 @@
 			android:onClick="logout"
 			android:shadowDx="-1.0"
 			android:shadowDy="1.0"
-			android:shadowColor="#FFFF0000"/>
+			android:shadowColor="#FFFF0000"
+			android:layout_marginRight="5dp"/>
 
 	</LinearLayout>
 
