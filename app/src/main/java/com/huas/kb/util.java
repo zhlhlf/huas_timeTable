@@ -9,6 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Date;
 import java.time.LocalDate;
@@ -71,6 +73,7 @@ public class util {
 					//util.showDiag(result.errorMsg);
 				} catch (Exception e) {
 					showDiag(e.getClass().getName() +"  "+ e.getMessage());
+					System.out.printf("getkb error : "+e.getMessage());
 				}
 
 				util.ct.runOnUiThread(new Runnable() {
@@ -100,12 +103,37 @@ public class util {
 		String cookie = "";
 		try {
 			Map map = util.getMap();
-			URL url = new URL(host + "/jsxsd/xk/LoginToXk?encoded=" + map.get("encode"));
-			HttpURLConnection ht = (HttpURLConnection) url.openConnection();
-			ht.setRequestMethod("POST");
-			ht.setInstanceFollowRedirects(false);
-			ht.connect();
-			List<String> list = ht.getHeaderFields().get("Set-Cookie");
+			URL url = new URL(host + "/jsxsd/xk/LoginToXk");
+			Map<String,String> data = new HashMap<>();
+			data.put("encoded",(String)map.get("encode"));
+			data.put("userAccount","zhlhlf");
+			data.put("userPassword","zhlhlf");
+			StringBuilder requestDataBuilder = new StringBuilder();
+			for (Map.Entry<String, String> entry : data.entrySet()) {
+				if (requestDataBuilder.length() != 0) {
+					requestDataBuilder.append("&");
+				}
+				String key = entry.getKey();
+				String value = entry.getValue();
+				requestDataBuilder.append(key+"="+value);
+			}
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			// 设置请求方法和其他属性
+			connection.setRequestMethod("POST");
+			connection.setInstanceFollowRedirects(false);
+			connection.setDoOutput(true); // 允许输出流，用于写入请求体
+			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			// 连接服务器
+			connection.connect();
+			System.out.println("登陆请求体: "+requestDataBuilder.toString());
+			// 写入请求体
+			try (OutputStream os = connection.getOutputStream()) {
+				byte[] input = requestDataBuilder.toString().getBytes(StandardCharsets.UTF_8);
+				os.write(input, 0, input.length);
+			}
+			
+			List<String> list = connection.getHeaderFields().get("Set-Cookie");
 			if (list == null) throw new Exception("账号或密码错误！");
 			for (int i = 0; i < list.size(); i++) {
 				if (list.get(i).contains("JSE") == true || list.get(i).contains("SER") == true) {
@@ -114,10 +142,12 @@ public class util {
 					cookie += hh;
 				}
 			}
+			connection.disconnect();
 		} catch (Exception e) {
 			showDiag(e.getClass().getName() + e.getMessage());
+			System.out.println("get-cookie："+e.getMessage());
 		}
-		Log.d("huas-kb","cookie" + cookie);
+		Log.d("huas-kb","cookie: " + cookie);
 
 		return cookie;
 	}
@@ -218,6 +248,7 @@ public class util {
 					showDiag("木有联网啊~");		
 				} catch (Exception e) {
 					showDiag("更新诗句失败");
+					System.out.printf("更新诗句失败: "+e.getMessage());
 					//showDiag("更新诗句失败 请告诉zhlhlf修复！");
 				}
 				util.ct.runOnUiThread(new Runnable(){

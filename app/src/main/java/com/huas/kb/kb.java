@@ -27,13 +27,14 @@ public class kb extends Activity {
         setContentView(R.layout.kb);
 		util.ct = this;
 		name = getFilesDir().getPath(); //数据私有目录
-
-	/*	new Thread(){
+        if(false){
+	    new Thread(){
 			public void run() {
 				shellutil.execCommand("logcat >" + getFilesDir().getPath() + "/log.log", false);
 			}
 		}.start();
-	*/
+        }
+	
 	
 		if (util.getMap().isEmpty()) {
 			logout(null);
